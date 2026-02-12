@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>E_Commerce.APIs</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Seeds\categories.json" />
+    <Content Remove="Seeds\products.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Seeds\categories.json" />
+    <None Include="Seeds\products.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\E-Commerce.App.Application.Abstruction\E-Commerce.App.Application.Abstruction.csproj" />
+    <ProjectReference Include="..\E_Commerce.App.Infrastructre.presistent\E_Commerce.App.Infrastructre.presistent.csproj" />
+  </ItemGroup>
+
+</Project>
