@@ -1,5 +1,6 @@
-using E_Commerce.APIs.Models;
+using E_Commerce.APIs.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace E_Commerce.APIs.Controllers
 {

@@ -3,13 +3,8 @@ using E_Commerce.App.Application.Abstruction.Models.Product;
 using E_Commerce.App.Application.Abstruction.Services.Product;
 using E_Commerce.App.Domain.Contract;
 using E_Commerce.App.Domain.Entities.Product;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace E_Commerce.App.Application.ProductServicies
+namespace E_Commerce.App.Application.Service.ProductServicies
 {
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IproductServices
     {

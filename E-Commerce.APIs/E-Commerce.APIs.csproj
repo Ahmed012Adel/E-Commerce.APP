@@ -26,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\E-Commerce-Api.Controller\E-Commerce-Api.Controller.csproj" />
     <ProjectReference Include="..\E-Commerce.App.Application.Abstruction\E-Commerce.App.Application.Abstruction.csproj" />
+    <ProjectReference Include="..\E-Commerce.App.Application\E-Commerce.App.Application.csproj" />
     <ProjectReference Include="..\E_Commerce.App.Infrastructre.presistent\E_Commerce.App.Infrastructre.presistent.csproj" />
   </ItemGroup>
 

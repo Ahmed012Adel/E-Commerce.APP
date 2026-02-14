@@ -1,8 +1,10 @@
 using E_Commerce.APIs.Servicies;
+using E_Commerce.App.Application;
 using E_Commerce.App.Application.Abstruction;
 using E_Commerce.App.Domain.Contract;
 using E_Commerce.App.Infrastructre.presistent;
 using E_Commerce.App.Infrastructre.presistent._Data;
+using E_Commerce_Api.Controller;
 using Microsoft.EntityFrameworkCore;
 namespace E_Commerce.APIs
 {
@@ -17,7 +19,8 @@ namespace E_Commerce.APIs
 
             // Add services to the container.
 
-            WebApplictionBuilder.Services.AddControllers();
+            WebApplictionBuilder.Services.AddControllers()
+                .AddApplicationPart(typeof(ControllerAssemblyInformation).Assembly);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             WebApplictionBuilder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 
@@ -25,7 +28,7 @@ namespace E_Commerce.APIs
             WebApplictionBuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
 
             WebApplictionBuilder.Services.AddPersistenceService(WebApplictionBuilder.Configuration);
-
+            WebApplictionBuilder.Services.AddApplicatinServices();
 
 
 

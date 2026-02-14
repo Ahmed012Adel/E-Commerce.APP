@@ -1,4 +1,4 @@
-namespace E_Commerce.APIs.Models
+namespace E_Commerce.APIs.Controllers.Models
 {
     public class WeatherForecast
     {
