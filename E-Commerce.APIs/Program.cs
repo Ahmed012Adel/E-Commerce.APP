@@ -1,7 +1,7 @@
 using E_Commerce.APIs.Servicies;
 using E_Commerce.App.Application;
 using E_Commerce.App.Application.Abstruction;
-using E_Commerce.App.Domain.Contract;
+using E_Commerce.App.Domain.Contract.Peresistence;
 using E_Commerce.App.Infrastructre.presistent;
 using E_Commerce.App.Infrastructre.presistent._Data;
 using E_Commerce_Api.Controller;
@@ -69,6 +69,8 @@ namespace E_Commerce.APIs
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

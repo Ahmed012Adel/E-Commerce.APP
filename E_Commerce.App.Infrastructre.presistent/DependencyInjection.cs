@@ -1,4 +1,4 @@
-﻿using E_Commerce.App.Domain.Contract;
+﻿using E_Commerce.App.Domain.Contract.Peresistence;
 using E_Commerce.App.Infrastructre.presistent._Data;
 using E_Commerce.App.Infrastructre.presistent._Data.Interceptor;
 using E_Commerce.App.Infrastructre.presistent.Repositieries;

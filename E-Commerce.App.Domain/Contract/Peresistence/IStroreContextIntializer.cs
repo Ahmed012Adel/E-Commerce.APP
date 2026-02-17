@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Commerce.App.Domain.Contract
+namespace E_Commerce.App.Domain.Contract.Peresistence
 {
     public interface IStroreContextIntializer
     {

@@ -1,7 +1,11 @@
 ﻿using E_Commerce.App.Domain.Common;
 using E_Commerce.App.Domain.Contract;
+using E_Commerce.App.Domain.Contract.Peresistence;
+using E_Commerce.App.Domain.Entities.Product;
 using E_Commerce.App.Infrastructre.presistent._Data;
+using E_Commerce.App.Infrastructre.presistent.Repositieries.Generic_Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +20,26 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries
 
     {
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool WithTracking)
-            =>  WithTracking? await dbContext.Set<TEntity>().ToListAsync() : 
-                              await dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+        {
+           return WithTracking ? await dbContext.Set<TEntity>().ToListAsync() :
+                  await dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+        }
+
 
         public async Task<TEntity?> GetAsync(TKey id)
-            => await dbContext.Set<TEntity>().FindAsync(id);
+        {
+            return await dbContext.Set<TEntity>().FindAsync(id);
+        }
 
+        public async Task<IEnumerable<TEntity>> GetAllSpecAsync(ISpecifications<TEntity, TKey> spec, bool WithTracking = false)
+        {
+            return await SpecificationsEvaluator<TEntity, TKey>.GetQuery(dbContext.Set<TEntity>(), spec).ToListAsync();
+        }
+
+        public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await SpecificationsEvaluator<TEntity, TKey>.GetQuery(dbContext.Set<TEntity>(), spec).FirstOrDefaultAsync();
+        }
 
         public async Task AddAsync(TEntity entity)
             => await dbContext.Set<TEntity>().AddAsync(entity);

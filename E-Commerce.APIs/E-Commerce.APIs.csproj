@@ -32,4 +32,8 @@
     <ProjectReference Include="..\E_Commerce.App.Infrastructre.presistent\E_Commerce.App.Infrastructre.presistent.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

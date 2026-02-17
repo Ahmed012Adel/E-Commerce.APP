@@ -1,5 +1,5 @@
 ﻿using E_Commerce.App.Domain.Common;
-using E_Commerce.App.Domain.Contract;
+using E_Commerce.App.Domain.Contract.Peresistence;
 using E_Commerce.App.Infrastructre.presistent._Data;
 using System;
 using System.Collections.Concurrent;
