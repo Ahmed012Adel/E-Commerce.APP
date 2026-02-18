@@ -10,8 +10,8 @@ namespace E_Commerce.App.Application
         public static IServiceCollection AddApplicatinServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfile));
-
-            services.AddScoped(typeof(IServiceManager) , typeof(ServiceManager));
+            
+            services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
             return services;
         }
 
