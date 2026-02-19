@@ -13,6 +13,8 @@ namespace E_Commerce.App.Domain.Specifications
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; set; } = null;
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new ();
+        public Expression<Func<TEntity, object>>? OrderBy { get; set; } = null;
+        public Expression<Func<TEntity, object>>? OrderByDescending { get; set; } = null;
 
         public BaseSpecifications()
         {
@@ -22,6 +24,16 @@ namespace E_Commerce.App.Domain.Specifications
         public BaseSpecifications(TKey id)
         {
             Criteria = E => E.Id.Equals(id);
+        }
+
+        protected private void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+
+        protected private void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescendingExpression)
+        {
+            OrderByDescending = orderByDescendingExpression;
         }
     }
 }

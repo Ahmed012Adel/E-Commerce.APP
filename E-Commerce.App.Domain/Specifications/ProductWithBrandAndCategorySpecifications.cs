@@ -18,5 +18,7 @@ namespace E_Commerce.App.Domain.Specifications
             Includes.Add(P => P.Brand!);
             Includes.Add(P => P.Category!);
         }
+
+
     }
 }

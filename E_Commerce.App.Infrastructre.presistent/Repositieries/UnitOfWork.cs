@@ -28,8 +28,8 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries
         => (IGenericRepositieries<TEntity, Tkey>)_Repositiries.GetOrAdd(typeof(TEntity).Name, new GenericRepositiries<TEntity, Tkey>(_dbcontext));
         
 
-        public async Task<int> SaveChangesAsync() => await SaveChangesAsync();
-        public async ValueTask DisposeAsync()=> await DisposeAsync();
+        public async Task<int> SaveChangesAsync() => await _dbcontext.SaveChangesAsync();
+        public async ValueTask DisposeAsync()=> await _dbcontext.DisposeAsync();
 
     }
 }

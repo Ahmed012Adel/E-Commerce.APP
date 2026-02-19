@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="_Data\Migrations\" />
+    <Folder Include="_Data\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
