@@ -4,14 +4,18 @@ namespace E_Commerce.App.Domain.Specifications
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort) : base()
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId) 
+            : base(
+                  p=>
+                  (!BrandId.HasValue || p.BrandId == BrandId.Value)
+                  &&
+                  (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
+
+                  )
         {
             AddIncludes();
 
-            AddOrderBy(p => p.Name);
 
-            if(!string.IsNullOrEmpty(sort))
-            {
                 switch (sort)
                 {
                     case "nameDesc":
@@ -30,7 +34,7 @@ namespace E_Commerce.App.Domain.Specifications
                         AddOrderBy(p => p.Name);
                         break;
                 }
-            }
+            
         }
         public ProductWithBrandAndCategorySpecifications(int id) : base (id)
         {

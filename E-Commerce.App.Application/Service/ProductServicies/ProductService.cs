@@ -9,9 +9,9 @@ namespace E_Commerce.App.Application.Service.ProductServicies
 {
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IproductServices
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(string? sort)
+        public async Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(string? sort , int? BrandId, int? CategoryId)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(sort);
+            var spec = new ProductWithBrandAndCategorySpecifications(sort ,BrandId , CategoryId);
             var products = await unitOfWork.GetRepositieries<Product,int>().GetAllSpecAsync(spec);
             var ProductsMapped = mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products);
             return ProductsMapped;

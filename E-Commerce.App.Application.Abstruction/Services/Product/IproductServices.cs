@@ -9,7 +9,7 @@ namespace E_Commerce.App.Application.Abstruction.Services.Product
 {
     public interface IproductServices
     {
-        public Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(string? sort);
+        public Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(string? sort , int? BrandId , int? CategoryId);
         public Task<ProductToReturnDto> GetProduct(int id);
         public Task<IEnumerable<BrandDto>> GetAllBrandAsync();
         public Task<IEnumerable<CategoryDto>> GetAllCategoryAsync();
