@@ -14,6 +14,6 @@ namespace E_Commerce.App.Domain.Contract
         public List<Expression<Func<TEntity, object>>> Includes { get; set; }
 
         public Expression<Func<TEntity, object>>? OrderBy { get; set; } 
-        public Expression<Func<TEntity, object>>? OrderByDescending { get; set; } 
+        public Expression<Func<TEntity, object>>? OrderByDesc { get; set; } 
     }
 }

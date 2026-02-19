@@ -17,7 +17,12 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries.Generic_Reposito
             if (spec.Criteria is not null)
                 query = query.Where(spec.Criteria);
 
-            query = spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
+            if(spec.OrderByDesc is not null)
+                query = query.OrderByDescending(spec.OrderByDesc);
+            else if (spec.OrderBy is not null)
+                query = query.OrderBy(spec.OrderBy);
+
+                query = spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
 
             return query;   
          }
