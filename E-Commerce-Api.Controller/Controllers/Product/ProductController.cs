@@ -8,9 +8,9 @@ namespace E_Commerce_Api.Controller.Controllers.Product
     public class ProductController(IServiceManager serviceManager) : BaseApiController
     {
         [HttpGet] 
-        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts(string? sort , int? BrandId ,int? CategoryId )
+        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
         {
-            var products = await serviceManager.ProductService.GetAllProductAsync(sort , BrandId , CategoryId);
+            var products = await serviceManager.ProductService.GetAllProductAsync(specParams);
             return Ok(products);
         }
          

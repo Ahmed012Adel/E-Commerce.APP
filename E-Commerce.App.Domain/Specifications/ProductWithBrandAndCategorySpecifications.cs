@@ -4,19 +4,14 @@ namespace E_Commerce.App.Domain.Specifications
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId) 
-            : base(
-                  p=>
-                  (!BrandId.HasValue || p.BrandId == BrandId.Value)
-                  &&
-                  (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
-
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId, int pageIndex, int pageSize) 
+            : base(p => (!BrandId.HasValue || p.BrandId == BrandId.Value) &&
+                        (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
                   )
         {
             AddIncludes();
 
-
-                switch (sort)
+            switch (sort)
                 {
                     case "nameDesc":
                         AddOrderByDesc(p => p.Name);
@@ -34,7 +29,8 @@ namespace E_Commerce.App.Domain.Specifications
                         AddOrderBy(p => p.Name);
                         break;
                 }
-            
+
+            ApplyPagination(pageSize * (pageIndex-1), pageSize);
         }
         public ProductWithBrandAndCategorySpecifications(int id) : base (id)
         {

@@ -15,6 +15,9 @@ namespace E_Commerce.App.Domain.Specifications
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new ();
         public Expression<Func<TEntity, object>>? OrderBy { get; set; } = null;
         public Expression<Func<TEntity, object>>? OrderByDesc { get; set; } = null;
+        public int Skip { get; set; }
+        public int Take { get; set; }
+        public bool IsPaginationEnabled { get; set; }
 
         protected BaseSpecifications()
         {
@@ -43,6 +46,13 @@ namespace E_Commerce.App.Domain.Specifications
         protected private virtual void AddOrderByDesc(Expression<Func<TEntity, object>> orderByDescExpression)
         {
             OrderByDesc = orderByDescExpression;
+        }
+
+        private protected void ApplyPagination(int skip, int take)
+        {
+            IsPaginationEnabled = true;
+            Skip = skip;
+            Take = take;
         }
     }
 }

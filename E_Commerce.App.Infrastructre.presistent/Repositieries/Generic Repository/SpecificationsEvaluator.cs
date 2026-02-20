@@ -22,6 +22,9 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries.Generic_Reposito
             else if (spec.OrderBy is not null)
                 query = query.OrderBy(spec.OrderBy);
 
+            if(spec.IsPaginationEnabled)
+                query = query.Skip(spec.Skip).Take(spec.Take);  
+
                 query = spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
 
             return query;   

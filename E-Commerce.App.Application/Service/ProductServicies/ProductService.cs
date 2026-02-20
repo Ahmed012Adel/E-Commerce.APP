@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using E_Commerce.App.Application.Abstruction.Common;
 using E_Commerce.App.Application.Abstruction.Models.Product;
 using E_Commerce.App.Application.Abstruction.Services.Product;
 using E_Commerce.App.Domain.Contract.Peresistence;
@@ -9,12 +10,12 @@ namespace E_Commerce.App.Application.Service.ProductServicies
 {
     internal class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IproductServices
     {
-        public async Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(string? sort , int? BrandId, int? CategoryId)
+        public async Task<Pagination<ProductToReturnDto>> GetAllProductAsync(ProductSpecParams specParams)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(sort ,BrandId , CategoryId);
+            var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize);
             var products = await unitOfWork.GetRepositieries<Product,int>().GetAllSpecAsync(spec);
             var ProductsMapped = mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products);
-            return ProductsMapped;
+            return new Pagination<ProductToReturnDto>(specParams.PageIndex, specParams.PageSize, ProductsMapped);
         }
 
         public async Task<ProductToReturnDto> GetProduct(int id)
