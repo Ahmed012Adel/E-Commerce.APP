@@ -14,8 +14,12 @@ namespace E_Commerce.App.Application.Service.ProductServicies
         {
             var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize);
             var products = await unitOfWork.GetRepositieries<Product,int>().GetAllSpecAsync(spec);
+
             var ProductsMapped = mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products);
-            return new Pagination<ProductToReturnDto>(specParams.PageIndex, specParams.PageSize, ProductsMapped);
+
+            var CountSpec = new ProductWithFilterationForCountPagination(specParams.BrandId, specParams.CategoryId);
+            var count = await unitOfWork.GetRepositieries<Product, int>().GetCountAsync(CountSpec);
+            return new Pagination<ProductToReturnDto>(specParams.PageIndex , specParams.PageSize , count) { Data = ProductsMapped };
         }
 
         public async Task<ProductToReturnDto> GetProduct(int id)

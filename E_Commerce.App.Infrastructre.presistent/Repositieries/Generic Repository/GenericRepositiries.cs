@@ -33,12 +33,16 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries
 
         public async Task<IEnumerable<TEntity>> GetAllSpecAsync(ISpecifications<TEntity, TKey> spec, bool WithTracking = false)
         {
-            return await SpecificationsEvaluator<TEntity, TKey>.GetQuery(dbContext.Set<TEntity>(), spec).ToListAsync();
+            return await ApplySpecifcation(spec).ToListAsync();
         }
 
         public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
         {
-            return await SpecificationsEvaluator<TEntity, TKey>.GetQuery(dbContext.Set<TEntity>(), spec).FirstOrDefaultAsync();
+            return await ApplySpecifcation(spec).FirstOrDefaultAsync();
+        }
+        public async Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplySpecifcation(spec).CountAsync();
         }
 
         public async Task AddAsync(TEntity entity)
@@ -50,5 +54,12 @@ namespace E_Commerce.App.Infrastructre.presistent.Repositieries
 
         public void Update(TEntity entity)
             => dbContext.Set<TEntity>().Update(entity);
+
+ 
+        private IQueryable<TEntity> ApplySpecifcation(ISpecifications<TEntity , TKey> specifications)
+        {
+            return SpecificationsEvaluator<TEntity, TKey>.GetQuery(dbContext.Set<TEntity>(), specifications);
+        }
+         
     }
 }

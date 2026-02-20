@@ -15,6 +15,7 @@ namespace E_Commerce.App.Domain.Contract.Peresistence
         Task<IEnumerable<TEntity>> GetAllSpecAsync(ISpecifications<TEntity, Tkey> spec, bool WithTracking = false);
         Task<TEntity?> GetAsync(Tkey id);
         Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, Tkey> spec);
+        Task<int> GetCountAsync(ISpecifications<TEntity , Tkey> spec);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);

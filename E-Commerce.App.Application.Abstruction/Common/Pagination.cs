@@ -12,11 +12,11 @@ namespace E_Commerce.App.Application.Abstruction.Common
         public int PageIndex { get; set; }
         public int Count { get; set; }
         public required IEnumerable<T> Data { get; set; }
-        public Pagination(int pageIndex, int pageSize, IEnumerable<T> data)
+        public Pagination(int pageIndex, int pageSize , int count)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
-            Data = data;
+            Count = count;
         }
     }
 }

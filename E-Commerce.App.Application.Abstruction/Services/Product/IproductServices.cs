@@ -1,4 +1,5 @@
-﻿using E_Commerce.App.Application.Abstruction.Models.Product;
+﻿using E_Commerce.App.Application.Abstruction.Common;
+using E_Commerce.App.Application.Abstruction.Models.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace E_Commerce.App.Application.Abstruction.Services.Product
 {
     public interface IproductServices
     {
-        public Task<IEnumerable<ProductToReturnDto>> GetAllProductAsync(ProductSpecParams specParams);
+        public Task<Pagination<ProductToReturnDto>> GetAllProductAsync(ProductSpecParams specParams);
         public Task<ProductToReturnDto> GetProduct(int id);
         public Task<IEnumerable<BrandDto>> GetAllBrandAsync();
         public Task<IEnumerable<CategoryDto>> GetAllCategoryAsync();
