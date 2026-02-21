@@ -4,8 +4,12 @@ namespace E_Commerce.App.Domain.Specifications
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId, int pageIndex, int pageSize) 
-            : base(p => (!BrandId.HasValue || p.BrandId == BrandId.Value) &&
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId, int pageIndex, int pageSize,string? Search) 
+            : base(
+                  p =>
+                  (string.IsNullOrEmpty(Search) || p.NormalizedName.Contains(Search))
+                  &&
+                  (!BrandId.HasValue || p.BrandId == BrandId.Value) &&
                         (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
                   )
         {

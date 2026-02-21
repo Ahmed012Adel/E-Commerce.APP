@@ -18,6 +18,9 @@ namespace E_Commerce.App.Infrastructre.presistent._Data.Config.Product
             builder.Property(p => p.Name)
                 .HasMaxLength(100)
                 .IsRequired();
+            builder.Property(p => p.NormalizedName)
+               .HasMaxLength(100)
+               .IsRequired();
             builder.Property(p => p.Description) 
                 .IsRequired();  
             builder.Property(p => p.Price)

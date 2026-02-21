@@ -12,12 +12,12 @@ namespace E_Commerce.App.Application.Service.ProductServicies
     {
         public async Task<Pagination<ProductToReturnDto>> GetAllProductAsync(ProductSpecParams specParams)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize);
+            var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize , specParams.Search);
             var products = await unitOfWork.GetRepositieries<Product,int>().GetAllSpecAsync(spec);
 
             var ProductsMapped = mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products);
 
-            var CountSpec = new ProductWithFilterationForCountPagination(specParams.BrandId, specParams.CategoryId);
+            var CountSpec = new ProductWithFilterationForCountPagination(specParams.BrandId, specParams.CategoryId ,specParams.Search);
             var count = await unitOfWork.GetRepositieries<Product, int>().GetCountAsync(CountSpec);
             return new Pagination<ProductToReturnDto>(specParams.PageIndex , specParams.PageSize , count) { Data = ProductsMapped };
         }

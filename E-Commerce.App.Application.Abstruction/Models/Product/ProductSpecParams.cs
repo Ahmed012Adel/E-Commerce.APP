@@ -14,6 +14,14 @@ namespace E_Commerce.App.Application.Abstruction.Models.Product
         public int PageIndex { get; set; } = 1;
         private int pageSize = 5;
         private const int PageMaxSize = 10;
+        private string? search;
+
+        public string? Search
+        {
+            get { return search; }
+            set { search = value?.ToUpper() ; }
+        }
+
         public int PageSize
         {
             get { return pageSize; }
