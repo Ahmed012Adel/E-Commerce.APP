@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace E_Commerce_Api.Controller.Error
@@ -28,5 +29,7 @@ namespace E_Commerce_Api.Controller.Error
                 _ => null,
             };
         }
+
+        public override string ToString() => JsonSerializer.Serialize(this, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
     }
 }
