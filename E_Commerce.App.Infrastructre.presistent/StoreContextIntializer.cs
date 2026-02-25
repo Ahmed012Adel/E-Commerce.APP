@@ -15,18 +15,18 @@ namespace E_Commerce.App.Infrastructre.presistent
     {
         public async Task SeedData(string ContenRootpath)
         {
-            if (!dbContext.Brands.Any())
+            if (!dbContext.vendors.Any())
             {
-                var path = Path.Combine(ContenRootpath, "Seeds", "brands.json");
+                var path = Path.Combine(ContenRootpath, "Seeds", "Vendors.json");
 
-                var brandData = await File.ReadAllTextAsync(path);
-                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandData);
+                var VendorData = await File.ReadAllTextAsync(path);
+                var Vendors = JsonSerializer.Deserialize<List<Vendor>>(VendorData);
 
 
-                if (brands?.Count > 0)
+                if (Vendors?.Count > 0)
                 {
 
-                    await dbContext.Set<ProductBrand>().AddRangeAsync(brands);
+                    await dbContext.Set<Vendor>().AddRangeAsync(Vendors);
                     await dbContext.SaveChangesAsync();
                 }
             }

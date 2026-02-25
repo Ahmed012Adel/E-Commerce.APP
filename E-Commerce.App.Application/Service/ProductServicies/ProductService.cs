@@ -12,12 +12,12 @@ namespace E_Commerce.App.Application.Service.ProductServicies
     {
         public async Task<Pagination<ProductToReturnDto>> GetAllProductAsync(ProductSpecParams specParams)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize , specParams.Search);
+            var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.VendorId, specParams.CategoryId, specParams.PageIndex, specParams.PageSize , specParams.Search);
             var products = await unitOfWork.GetRepositieries<Product,int>().GetAllSpecAsync(spec);
 
             var ProductsMapped = mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products);
 
-            var CountSpec = new ProductWithFilterationForCountPagination(specParams.BrandId, specParams.CategoryId ,specParams.Search);
+            var CountSpec = new ProductWithFilterationForCountPagination(specParams.VendorId, specParams.CategoryId ,specParams.Search);
             var count = await unitOfWork.GetRepositieries<Product, int>().GetCountAsync(CountSpec);
             return new Pagination<ProductToReturnDto>(specParams.PageIndex , specParams.PageSize , count) { Data = ProductsMapped };
         }
@@ -30,11 +30,11 @@ namespace E_Commerce.App.Application.Service.ProductServicies
             return ProductMapped;
         }
 
-        public async Task<IEnumerable<BrandDto>> GetAllBrandAsync()
+        public async Task<IEnumerable<VendorDto>> GetAllBrandAsync()
         {
-            var brands =await unitOfWork.GetRepositieries<ProductBrand, int>().GetAllAsync();
-            var brandsMapped = mapper.Map<IEnumerable<ProductBrand>, IEnumerable<BrandDto>>(brands);
-            return brandsMapped;
+            var vendors =await unitOfWork.GetRepositieries<Vendor, int>().GetAllAsync();
+            var vendorsMapped = mapper.Map<IEnumerable<Vendor>, IEnumerable<VendorDto>>(vendors);
+            return vendorsMapped;
         }
 
         public async Task<IEnumerable<CategoryDto>> GetAllCategoryAsync()

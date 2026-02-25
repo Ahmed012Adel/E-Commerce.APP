@@ -27,9 +27,9 @@ namespace E_Commerce.App.Infrastructre.presistent._Data.Config.Product
                 .HasColumnType("decimal(9,4)")
                 .IsRequired();
 
-            builder.HasOne(P=>P.Brand)
+            builder.HasOne(P=>P.vendor)
                 .WithMany()
-                .HasForeignKey(P=>P.BrandId)
+                .HasForeignKey(P=>P.VendorId)
                 .OnDelete(DeleteBehavior.SetNull);
 
                 builder.HasOne(P => P.Category)

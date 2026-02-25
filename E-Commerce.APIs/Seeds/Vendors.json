@@ -1,0 +1,65 @@
+[
+  {
+    "Id": 0,
+    "Name": "Starbucks",
+    "Phone": "01012345678",
+    "Password": "Starbucks@123",
+    "Address": "Mall of Egypt, 6th of October, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "Costa",
+    "Phone": "01112345678",
+    "Password": "Costa@123",
+    "Address": "City Stars Mall, Nasr City, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "Cilantro",
+    "Phone": "01212345678",
+    "Password": "Cilantro@123",
+    "Address": "Zamalek, Cairo, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "TBS",
+    "Phone": "01512345678",
+    "Password": "TBS@123",
+    "Address": "Heliopolis, Cairo, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "On The Run",
+    "Phone": "01087654321",
+    "Password": "OnTheRun@123",
+    "Address": "Sheikh Zayed, Giza, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "Caribou",
+    "Phone": "01187654321",
+    "Password": "Caribou@123",
+    "Address": "Downtown, Cairo, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  },
+  {
+    "Id": 0,
+    "Name": "Krispy Kreme",
+    "Phone": "01287654321",
+    "Password": "Krispy@123",
+    "Address": "Mall of Arabia, 6th of October, Egypt",
+    "CreatedBy": "1",
+    "lastModifiedBy": "1"
+  }
+]

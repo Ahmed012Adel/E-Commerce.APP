@@ -15,8 +15,8 @@ namespace E_Commerce.App.Domain.Entities.Product
         public string? PictureUrl { get; set; }
         public decimal Price { get; set; }
 
-        public int? BrandId { get; set; }
-        public virtual ProductBrand? Brand { get; set; }
+        public int? VendorId { get; set; }
+        public virtual Vendor? vendor { get; set; }
 
         public int? CategoryId { get; set; }
         public virtual ProductCategory? Category { get; set; }

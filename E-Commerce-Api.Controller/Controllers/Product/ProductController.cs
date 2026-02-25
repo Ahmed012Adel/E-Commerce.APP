@@ -27,7 +27,7 @@ namespace E_Commerce_Api.Controller.Controllers.Product
         }
 
         [HttpGet ("brands")]
-        public async Task<ActionResult<IEnumerable<BrandDto>>> GetBrands()
+        public async Task<ActionResult<IEnumerable<VendorDto>>> GetBrands()
         {
             var brands = await serviceManager.ProductService.GetAllBrandAsync();
             return Ok(brands);

@@ -13,8 +13,8 @@ namespace E_Commerce.App.Application.Abstruction.Models.Product
         public string? PictureUrl { get; set; }
         public decimal Price { get; set; }
 
-        public int? BrandId { get; set; }
-        public virtual string? Brand { get; set; }
+        public int? VendorId { get; set; }
+        public virtual string? vendor { get; set; }
 
         public int? CategoryId { get; set; }
         public virtual string? Category { get; set; }

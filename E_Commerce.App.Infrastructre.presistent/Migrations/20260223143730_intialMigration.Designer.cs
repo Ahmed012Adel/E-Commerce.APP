@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Commerce.App.Infrastructre.presistent.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20260221030642_intialMigration")]
+    [Migration("20260223143730_intialMigration")]
     partial class intialMigration
     {
         /// <inheritdoc />
@@ -35,9 +35,6 @@ namespace E_Commerce.App.Infrastructre.presistent.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -71,46 +68,19 @@ namespace E_Commerce.App.Infrastructre.presistent.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(9,4)");
 
+                    b.Property<int?>("VendorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("lastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("VendorId");
+
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("E_Commerce.App.Domain.Entities.Product.ProductBrand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastModifideOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("lastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("E_Commerce.App.Domain.Entities.Product.ProductCategory", b =>
@@ -143,21 +113,70 @@ namespace E_Commerce.App.Infrastructre.presistent.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("E_Commerce.App.Domain.Entities.Product.Vendor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModifideOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
+
+                    b.Property<string>("lastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("vendors");
+                });
+
             modelBuilder.Entity("E_Commerce.App.Domain.Entities.Product.Product", b =>
                 {
-                    b.HasOne("E_Commerce.App.Domain.Entities.Product.ProductBrand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("E_Commerce.App.Domain.Entities.Product.ProductCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Brand");
+                    b.HasOne("E_Commerce.App.Domain.Entities.Product.Vendor", "vendor")
+                        .WithMany("Products")
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Category");
+
+                    b.Navigation("vendor");
+                });
+
+            modelBuilder.Entity("E_Commerce.App.Domain.Entities.Product.Vendor", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

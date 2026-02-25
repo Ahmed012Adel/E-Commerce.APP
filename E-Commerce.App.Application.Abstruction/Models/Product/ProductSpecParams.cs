@@ -9,7 +9,7 @@ namespace E_Commerce.App.Application.Abstruction.Models.Product
     public class ProductSpecParams
     {
         public string? Sort { get; set; }
-        public int? BrandId { get; set; }
+        public int? VendorId { get; set; }
         public int? CategoryId { get; set; }
         public int PageIndex { get; set; } = 1;
         private int pageSize = 5;

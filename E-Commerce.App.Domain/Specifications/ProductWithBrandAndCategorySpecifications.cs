@@ -4,12 +4,12 @@ namespace E_Commerce.App.Domain.Specifications
 {
     public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
     {
-        public ProductWithBrandAndCategorySpecifications(string? sort, int? BrandId, int? CategoryId, int pageIndex, int pageSize,string? Search) 
+        public ProductWithBrandAndCategorySpecifications(string? sort, int? vendorId, int? CategoryId, int pageIndex, int pageSize,string? Search) 
             : base(
                   p =>
                   (string.IsNullOrEmpty(Search) || p.NormalizedName.Contains(Search))
                   &&
-                  (!BrandId.HasValue || p.BrandId == BrandId.Value) &&
+                  (!vendorId.HasValue || p.VendorId == vendorId.Value) &&
                         (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
                   )
         {
@@ -44,7 +44,7 @@ namespace E_Commerce.App.Domain.Specifications
         private protected override void AddIncludes()
         {
             base.AddIncludes();
-            Includes.Add(P => P.Brand!);
+            Includes.Add(P => P.vendor!);
             Includes.Add(P => P.Category!);
         }
 

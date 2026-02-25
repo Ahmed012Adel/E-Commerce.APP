@@ -16,7 +16,7 @@ namespace E_Commerce.App.Infrastructre.presistent._Data
         }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductBrand> Brands { get; set; }
+        public DbSet<Vendor> vendors { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
     }
 }

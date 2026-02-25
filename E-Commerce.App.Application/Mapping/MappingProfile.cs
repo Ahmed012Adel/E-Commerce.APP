@@ -9,11 +9,11 @@ namespace E_Commerce.App.Application.Mapping
         public MappingProfile()
         {
             CreateMap<Product, ProductToReturnDto>()
-                .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Brand!.Name))
+                .ForMember(dest => dest.vendor, opt => opt.MapFrom(src => src.vendor!.Name))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category!.Name))
                 .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<ProductPictureUrlResolver>());
 
-            CreateMap<ProductBrand, BrandDto>();
+            CreateMap<Vendor, VendorDto>();
             CreateMap<ProductCategory, CategoryDto>();
         }
     }

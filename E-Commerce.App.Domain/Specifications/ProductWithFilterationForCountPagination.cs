@@ -9,11 +9,11 @@ namespace E_Commerce.App.Domain.Specifications
 {
     public class ProductWithFilterationForCountPagination : BaseSpecifications<Product , int>
     {
-        public ProductWithFilterationForCountPagination( int? BrandId, int? CategoryId, string? Search)
+        public ProductWithFilterationForCountPagination( int? VendorId, int? CategoryId, string? Search)
             : base(p =>
             (string.IsNullOrEmpty(Search) || p.NormalizedName.Contains(Search))
                   &&
-            (!BrandId.HasValue || p.BrandId == BrandId.Value) &&
+            (!VendorId.HasValue || p.VendorId == VendorId.Value) &&
                         (!CategoryId.HasValue || p.CategoryId == CategoryId.Value)
                   )
         {

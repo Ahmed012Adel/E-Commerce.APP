@@ -23,6 +23,9 @@ namespace E_Commerce.App.Infrastructre.presistent
             services.AddScoped< IStroreContextIntializer , StoreContextIntializer>();
 
             services.AddScoped(typeof(IUnitOfWork) , typeof(UnitOfWork));
+
+
+
             services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
 
             return services;
