@@ -20,9 +20,6 @@ namespace E_Commerce_Api.Controller.Controllers.Product
         {
             var product = await serviceManager.ProductService.GetProduct(id);
 
-            if (product == null)
-                return NotFound(new ApiResponse(404, $"The Product with Id: {id} is not found"));
-
             return Ok(product);
         }
 
