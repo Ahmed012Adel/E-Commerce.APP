@@ -1,6 +1,10 @@
 ﻿using E_Commerce.App.Domain.Contract.Peresistence;
+using E_Commerce.App.Domain.Contract.Peresistence.DbIntializer;
+using E_Commerce.App.Domain.Entities.Identity;
 using E_Commerce.App.Infrastructre.presistent._Data;
 using E_Commerce.App.Infrastructre.presistent._Data.Interceptor;
+using E_Commerce.App.Infrastructre.presistent._Identity;
+using E_Commerce.App.Infrastructre.presistent.Identity;
 using E_Commerce.App.Infrastructre.presistent.Repositieries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,6 +25,14 @@ namespace E_Commerce.App.Infrastructre.presistent
             .UseSqlServer(configuration.GetConnectionString("StoreContext")));
         
             services.AddScoped< IStroreContextIntializer , StoreContextIntializer>();
+
+
+            services.AddDbContext<StorIdentityDbContext>(options =>
+
+            options
+            .UseLazyLoadingProxies()
+            .UseSqlServer(configuration.GetConnectionString("IdentityDbContext")));
+            services.AddScoped<IStoreIdentityContextIntializer, StoreIdentityContextIntializer>();
 
             services.AddScoped(typeof(IUnitOfWork) , typeof(UnitOfWork));
 

@@ -1,28 +1,32 @@
 ﻿using AutoMapper;
 using E_Commerce.App.Application.Abstruction.Services;
+using E_Commerce.App.Application.Abstruction.Services.Basket;
 using E_Commerce.App.Application.Abstruction.Services.Product;
 using E_Commerce.App.Application.Service.ProductServicies;
 using E_Commerce.App.Domain.Contract.Peresistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace E_Commerce.App.Application.Service
 {
     internal class ServiceManager : IServiceManager
     {
-        private IUnitOfWork _unitOfWork;
-        private IMapper _mapper;
-        private Lazy<IproductServices> _ProductService;
-        public ServiceManager(IUnitOfWork unitOfWork , IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+
+        private readonly Lazy<IproductServices> _productService;
+        private readonly Lazy<IBasketService> _basketService;
+        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, Func<IBasketService> basketServiceFactory)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _configuration = configuration;
 
-            _ProductService = new Lazy<IproductServices>(() => new ProductService(_unitOfWork,_mapper)); 
+            _productService = new Lazy<IproductServices>(() => new ProductService(_unitOfWork, _mapper));
+            _basketService = new Lazy<IBasketService>(basketServiceFactory);
         }
-        public IproductServices ProductService => _ProductService.Value;
+        public IproductServices ProductService => _productService.Value;
+
+        public IBasketService BasketService => _basketService.Value;
     }
 }

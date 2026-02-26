@@ -30,6 +30,7 @@
     <ProjectReference Include="..\E-Commerce.App.Application.Abstruction\E-Commerce.App.Application.Abstruction.csproj" />
     <ProjectReference Include="..\E-Commerce.App.Application\E-Commerce.App.Application.csproj" />
     <ProjectReference Include="..\E_Commerce.App.Infrastructre.presistent\E_Commerce.App.Infrastructre.presistent.csproj" />
+    <ProjectReference Include="..\E_Commerce.App.Infrastructre\E_Commerce.App.Infrastructre.csproj" />
   </ItemGroup>
 
   <ItemGroup>

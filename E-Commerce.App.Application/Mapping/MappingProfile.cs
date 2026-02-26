@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using E_Commerce.App.Application.Abstruction.Models.Basket;
 using E_Commerce.App.Application.Abstruction.Models.Product;
+using E_Commerce.App.Domain.Entities.Basket;
 using E_Commerce.App.Domain.Entities.Product;
 
 namespace E_Commerce.App.Application.Mapping
@@ -15,6 +17,8 @@ namespace E_Commerce.App.Application.Mapping
 
             CreateMap<Vendor, VendorDto>();
             CreateMap<ProductCategory, CategoryDto>();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
+            CreateMap<CustomerBasket, CustomerBasketDto>().ReverseMap();
         }
     }
 }

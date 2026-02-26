@@ -1,4 +1,5 @@
 ﻿using E_Commerce.App.Domain.Common;
+using E_Commerce.App.Infrastructre.presistent.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.App.Infrastructre.presistent._Data.Config.BaseConfig
 {
+    [DbContxtType(typeof(StoreDbContext))]
     internal class BaseEntityConfiguration<TEntity, TKey> : IEntityTypeConfiguration<TEntity>
         where TEntity : BaseEntity<TKey> 
         where TKey : IEquatable<TKey>

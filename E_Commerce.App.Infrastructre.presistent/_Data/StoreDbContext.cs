@@ -1,5 +1,8 @@
 ﻿using E_Commerce.App.Domain.Entities.Product;
+using E_Commerce.App.Infrastructre.presistent.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Reflection;
 
 namespace E_Commerce.App.Infrastructre.presistent._Data
 {
@@ -12,7 +15,8 @@ namespace E_Commerce.App.Infrastructre.presistent._Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
+           modelBuilder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly,
+               type => type.GetCustomAttribute<DbContxtTypeAttribute>()?.DbContextType == typeof(StoreDbContext));
         }
 
         public DbSet<Product> Products { get; set; }
