@@ -9,7 +9,7 @@ namespace E_Commerce_Api.Controller.Error
 {
     public class ApiValidationsErrorResponse : ApiResponse
     {
-        public required IEnumerable<ValidationError> Errors { get; set; }
+        public required IEnumerable<string> Errors { get; set; }
 
         public ApiValidationsErrorResponse(string? message = null) : base(400, message)
         {
