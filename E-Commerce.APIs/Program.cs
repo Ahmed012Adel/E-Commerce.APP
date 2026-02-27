@@ -2,6 +2,10 @@ using E_Commerce.APIs.Middleware;
 using E_Commerce.APIs.Servicies;
 using E_Commerce.App.Application;
 using E_Commerce.App.Application.Abstruction;
+using E_Commerce.App.Application.Abstruction.Common;
+using E_Commerce.App.Application.Abstruction.Models.Auth;
+using E_Commerce.App.Application.Abstruction.Services.Auth;
+using E_Commerce.App.Application.Service.Auth;
 using E_Commerce.App.Domain.Contract.Peresistence.DbIntializer;
 using E_Commerce.App.Domain.Entities.Identity;
 using E_Commerce.App.Infrastructre;
@@ -40,10 +44,8 @@ namespace E_Commerce.APIs
                                                                  Errors = P.Value!.Errors.Select(E => E.ErrorMessage)
                                                              });
 
-                        return new BadRequestObjectResult(new ApiValidationsErrorResponse()
-                        {
-                            Errors = errors
-                        });
+                        return new BadRequestObjectResult(new ApiValidationsErrorResponse() { Errors = errors});
+                        
                     };
                 })
                 .AddApplicationPart(typeof(ControllerAssemblyInformation).Assembly);
@@ -56,13 +58,13 @@ namespace E_Commerce.APIs
             WebApplicationBuilder.Services.AddPersistenceService(WebApplicationBuilder.Configuration);
             WebApplicationBuilder.Services.AddApplicatinServices();
             WebApplicationBuilder.Services.AddInfrastructureServices(WebApplicationBuilder.Configuration);
-
+            WebApplicationBuilder.Services.Configure<JWTSettings>(WebApplicationBuilder.Configuration.GetSection("JWTSettings"));
 
             WebApplicationBuilder.Services.AddIdentity<ApplicationsUser, IdentityRole>(Identityoptions => {
 
-                Identityoptions.SignIn.RequireConfirmedEmail = true;
-                Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
-                Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
+                //Identityoptions.SignIn.RequireConfirmedEmail = true;
+                //Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
+                //Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
 
                 Identityoptions.Password.RequireNonAlphanumeric = true;
                 Identityoptions.Password.RequiredUniqueChars = 2;
@@ -78,6 +80,8 @@ namespace E_Commerce.APIs
             }
             )
                 .AddEntityFrameworkStores<StorIdentityDbContext>();
+
+           
 
 
 

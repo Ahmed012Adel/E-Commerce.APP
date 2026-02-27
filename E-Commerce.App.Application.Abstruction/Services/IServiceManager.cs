@@ -1,4 +1,5 @@
-﻿using E_Commerce.App.Application.Abstruction.Services.Basket;
+﻿using E_Commerce.App.Application.Abstruction.Services.Auth;
+using E_Commerce.App.Application.Abstruction.Services.Basket;
 using E_Commerce.App.Application.Abstruction.Services.Product;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace E_Commerce.App.Application.Abstruction.Services
     {
         public IproductServices ProductService {  get; }
         public IBasketService BasketService { get; }
+        public IAuthService AuthService { get;  }
     }
 }

@@ -63,7 +63,7 @@ namespace E_Commerce.APIs.Middleware
                     httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     httpContext.Response.ContentType = "application/json";
 
-                    response = new ApiValidationsErrorResponse(ex.Message) { Errors = validationExeption.Errors};
+                    response = new ApiValidationsErrorResponse(ex.Message) ;
 
                     await httpContext.Response.WriteAsync(response.ToString());
                     break;
