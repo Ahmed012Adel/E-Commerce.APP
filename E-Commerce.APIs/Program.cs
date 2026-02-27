@@ -6,15 +6,11 @@ using E_Commerce.App.Domain.Contract.Peresistence.DbIntializer;
 using E_Commerce.App.Domain.Entities.Identity;
 using E_Commerce.App.Infrastructre;
 using E_Commerce.App.Infrastructre.presistent;
-using E_Commerce.App.Infrastructre.presistent._Data;
 using E_Commerce.App.Infrastructre.presistent.Identity;
 using E_Commerce_Api.Controller;
 using E_Commerce_Api.Controller.Error;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 namespace E_Commerce.APIs
 {
     public class Program
@@ -119,18 +115,20 @@ namespace E_Commerce.APIs
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+           // if (app.Environment.IsDevelopment())
+           // {
+           //     app.UseSwagger();
+           //     app.UseSwaggerUI();
+           // }
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
             app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -33,8 +33,4 @@
     <ProjectReference Include="..\E_Commerce.App.Infrastructre\E_Commerce.App.Infrastructre.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>

@@ -5,7 +5,7 @@ using System.Net;
 
 namespace E_Commerce.APIs.Middleware
 {
-    public class ExceptionHandlerMiddleware
+    public class ExceptionHandlerMiddleware     
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
@@ -37,6 +37,7 @@ namespace E_Commerce.APIs.Middleware
                 else
                 {
                     // Production Mode
+                    _logger.LogError(ex, ex.Message);
                 } 
                 #endregion
 
@@ -66,14 +67,30 @@ namespace E_Commerce.APIs.Middleware
                     response = new ApiResponse(400, ex.Message);
 
                     await httpContext.Response.WriteAsync(response.ToString());
-                    break;      
+                    break;
 
+                /// default:
+                /// 
+                ///  response = _env.IsDevelopment() ?
+                ///             new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
+                ///             :
+                ///             new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                /// 
+                ///  httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                ///  httpContext.Response.ContentType = "application/json";
+                /// 
+                ///  await httpContext.Response.WriteAsync(response.ToString());
+                /// 
+                /// break;
+               
                 default:
 
-                    response = _env.IsDevelopment()?
-                               new ApiExceptionResponse((int) HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
-                               :
-                               new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                    var errorMessage = ex.ToString(); 
+
+                    response = new ApiExceptionResponse(
+                        (int)HttpStatusCode.InternalServerError,
+                        errorMessage
+                    );
 
                     httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     httpContext.Response.ContentType = "application/json";
