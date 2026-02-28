@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.App.Application.Exception
 {
-    public class BadRequestException : ApplicationException
+    public class UnAuthorizedExeption :ApplicationException
     {
-        public BadRequestException(string? message = null) : base(message)
+        public UnAuthorizedExeption(string? Message = null) : base(Message)
         {
             
         }

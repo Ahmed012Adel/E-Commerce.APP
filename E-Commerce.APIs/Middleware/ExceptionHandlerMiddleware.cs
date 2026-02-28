@@ -1,5 +1,6 @@
 ﻿using Azure;
 using E_Commerce.App.Application.Exception;
+
 using E_Commerce_Api.Controller.Error;
 using System.Net;
 
@@ -59,6 +60,15 @@ namespace E_Commerce.APIs.Middleware
 
                     await httpContext.Response.WriteAsync(response.ToString());
                     break;
+                case ValidationExeption validationExeption:
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    httpContext.Response.ContentType = "application/json";
+
+                    response = new ApiValidationsErrorResponse(ex.Message) ;
+
+                    await httpContext.Response.WriteAsync(response.ToString());
+                    break;
+
 
                 case BadRequestException:
                     httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
