@@ -13,8 +13,11 @@ using E_Commerce.App.Infrastructre.presistent;
 using E_Commerce.App.Infrastructre.presistent.Identity;
 using E_Commerce_Api.Controller;
 using E_Commerce_Api.Controller.Error;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace E_Commerce.APIs
 {
     public class Program
@@ -77,7 +80,23 @@ namespace E_Commerce.APIs
             )
                 .AddEntityFrameworkStores<StorIdentityDbContext>();
 
-           
+            WebApplicationBuilder.Services.AddAuthentication(authentationOption 
+                => {
+                    authentationOption.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                }).AddJwtBearer( jwtOption => {
+                    jwtOption.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = WebApplicationBuilder.Configuration["JWTSettings:ValidIssuer"],
+                        ValidAudience = WebApplicationBuilder.Configuration["JWTSettings:ValidAudience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(WebApplicationBuilder.Configuration["JWTSettings:SecretKey"]!)),
+                        ClockSkew = TimeSpan.FromMinutes(0)
+                    };
+                });
 
 
 
@@ -133,6 +152,8 @@ namespace E_Commerce.APIs
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+
             app.UseAuthentication();
             app.UseAuthorization();
 
