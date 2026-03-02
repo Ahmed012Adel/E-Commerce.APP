@@ -1,25 +1,26 @@
-﻿using E_Commerce.App.Application.Abstruction.Common;
-using E_Commerce.App.Application.Abstruction.Models.Auth;
+﻿using E_Commerce.App.Application.Abstruction.Models.Auth;
 using E_Commerce.App.Application.Abstruction.Services.Auth;
 using E_Commerce.App.Application.Exception;
 using E_Commerce.App.Domain.Entities.Identity;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Core;
 
 namespace E_Commerce.App.Application.Service.Auth
 {
     public class AuthService(
         IOptions<JWTSettings> JwtSetting,
         UserManager<ApplicationsUser> userManager,
-        SignInManager<ApplicationsUser> signinManger) : IAuthService
+        SignInManager<ApplicationsUser> signinManger,
+        IEmailService _emailService) : IAuthService
     {
 
         private readonly JWTSettings _jwtSettings = JwtSetting.Value;
@@ -44,7 +45,6 @@ namespace E_Commerce.App.Application.Service.Auth
                 Token = await GeneratTokenAsync(user)
             };
         }
-
         public async Task<UserDto> RegisterAsunc(RegisterDto registerDto)
         {
             var user = new ApplicationsUser
@@ -67,6 +67,42 @@ namespace E_Commerce.App.Application.Service.Auth
             };
 
         }
+
+
+        public async Task ForgotPasswordAsync(ForgatPasswordDto dto ,string url)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            if (user is null) throw new NotFoundException("user not found",dto.Email);
+
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            var email = new 
+            {
+                To = user.Email!,
+                Subject = "Reset Password",
+                Body = $"Please reset your password by clicking <a href='{url}?email={user.Email}&token={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token))}'>here</a>"
+            };
+            
+             _emailService.SendEmail(email.To, email.Subject, email.Body);
+
+        }
+        public async Task ResetPasswordAsync(ResetPasswordDto dto,string token)
+        {
+            if(dto.NewPassword != dto.ConfirmPassword)
+                throw new ValidationExeption() { Errors = new List<string> { "New password and confirm password do not match." } };
+
+            var user =await userManager.FindByEmailAsync(dto.Email);
+            
+            if (user is null) throw new NotFoundException("user not found", dto.Email);
+            
+
+            var result = await userManager.ResetPasswordAsync(user, token, dto.NewPassword);
+
+            if (!result.Succeeded)
+            
+                throw new ValidationExeption() { Errors =  result.Errors.Select(e => e.Description) };
+        }
+       
 
         private async Task<string> GeneratTokenAsync(ApplicationsUser user)
         {
@@ -97,6 +133,44 @@ namespace E_Commerce.App.Application.Service.Auth
                 );
             return new JwtSecurityTokenHandler().WriteToken(TokenObj);
 
+        }
+
+        public async Task<AuthResponseDto> GoogleLoginAsync(GoogleLoginDto dto)
+        {
+            //var settings = new GoogleJsonWebSignature.ValidationSettings
+            //{
+            //    Audience = new[] { _configuration["Authentication:Google:ClientId"] }
+            //};                  
+
+            var payLoad =await GoogleJsonWebSignature.ValidateAsync(dto.IdToken);
+
+            var email = payLoad.Email;
+            var name = payLoad.Name;
+
+            if (email is null) throw new UnAuthorizedExeption("invalid google token");
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user is null)
+            {
+                user = new ApplicationsUser
+                {
+                    DisableName = name ?? email.Split('@')[0],
+                    Email = email,
+                    UserName = email,
+                    EmailConfirmed = true,
+                };
+                var result = await userManager.CreateAsync(user);
+                if (!result.Succeeded) throw new ValidationExeption() { Errors = result.Errors.Select(e => e.Description) };
+      
+            }
+      
+            var token =await GeneratTokenAsync(user);
+
+            return new AuthResponseDto
+            {
+                Email = user.Email!,
+                Token = token
+            };
         }
     }
 }

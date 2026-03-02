@@ -36,7 +36,7 @@ namespace E_Commerce.App.Application
                 return () => serviceProvider.GetRequiredService<IAuthService>();
             });
 
-
+            services.AddTransient(typeof(IEmailService), typeof(EmailService));
 
             return services;
         }

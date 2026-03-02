@@ -31,7 +31,7 @@ namespace E_Commerce.App.Infrastructre.presistent
 
             options
             .UseLazyLoadingProxies()
-            .UseSqlServer(configuration.GetConnectionString("IdentityDbContext")));
+            .UseSqlServer(configuration.GetConnectionString("IdentityContext")));
             services.AddScoped<IStoreIdentityContextIntializer, StoreIdentityContextIntializer>();
 
             services.AddScoped(typeof(IUnitOfWork) , typeof(UnitOfWork));
