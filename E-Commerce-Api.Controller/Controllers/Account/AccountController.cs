@@ -32,17 +32,38 @@ namespace E_Commerce_Api.Controller.Controllers.Account
         [HttpPost("ForgetPassword")]
         public async Task<ActionResult> ForgetPassword(ForgatPasswordDto model)
         {
-            var url = Url.Action("ResetPassword", "Account", new { email = model.Email }, Request.Scheme);
-            await serviceManager.AuthService.ForgotPasswordAsync(model ,url);
-            return Ok();
+            //var url = Url.Action(
+            //    "ResetPassword",       // Action
+            //    "Account",             // Controller
+            //    values: new {Email = model.Email},          // Query params مش هنا
+            //    protocol: Request.Scheme, // http أو https
+            //    host: Request.Host.Value // hostname + port
+            
+            //    );
+            await serviceManager.AuthService.ForgotPasswordAsync(model);
+            return Ok("Check Your Mail");
 
         }
-        [HttpPost("ResetPassword/{token}")]
-        public async Task<ActionResult> ResetPassword(ResetPasswordDto model)
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto model ,[FromQuery]string otp)
         {
-            var token = Request.Query["token"].ToString();
-            await serviceManager.AuthService.ResetPasswordAsync(model ,token);
-            return Ok();
+            await serviceManager.AuthService.ResetPasswordAsync(model,otp );
+            return Ok("Password Saved");
+        }
+
+        [HttpPost("VerifyEmail")]
+        public async Task<ActionResult> VerifyEmail(VerifyOtpDto model)
+        {
+            await serviceManager.AuthService.VerifyEmail(model);
+            return Ok("Email verified successfully");
+
+        }
+
+        [HttpPost("ResendOtp")]
+        public async Task<ActionResult> ResendOTP(ForgatPasswordDto model)
+        {
+            await serviceManager.AuthService.ResendOTP(model);
+            return Ok("OTP resent successfully");
         }
     }
 }

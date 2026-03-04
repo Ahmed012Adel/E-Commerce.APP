@@ -35,7 +35,7 @@ namespace E_Commerce.App.Application.Service.Auth
             if (result.IsNotAllowed) throw new UnAuthorizedExeption("Account is not allowed to login");
 
 
-            if (!result.Succeeded) throw new UnAuthorizedExeption("invalid login");
+            if (!result.Succeeded) throw new NotFoundException("Invalid Login" , user.Email);
 
             return new UserDto
             {
@@ -47,6 +47,8 @@ namespace E_Commerce.App.Application.Service.Auth
         }
         public async Task<UserDto> RegisterAsunc(RegisterDto registerDto)
         {
+            var Emailexisted = await userManager.FindByEmailAsync(registerDto.Email);
+            if (Emailexisted is not null) throw new UnAuthorizedExeption("Email Is Existe");
             var user = new ApplicationsUser
             {
                 UserName = registerDto.UserName,
@@ -58,6 +60,21 @@ namespace E_Commerce.App.Application.Service.Auth
 
             if (!result.Succeeded) throw new ValidationExeption() { Errors = result.Errors.Select(E=>E.Description)};
 
+            user.Otp = new Random().Next(100000, 999999).ToString();
+            user.OtpExpire = DateTime.UtcNow.AddMinutes(5);
+
+            await userManager.UpdateAsync(user);
+            _emailService.SendEmail(user.Email!,
+                                    "Verify Your Email – Enjaz MultiVendor",
+                                    $@"
+                                    Hello {user.UserName},
+                                    Welcome to Enjaz MultiVendor! Please verify your email by entering the OTP code below:
+                                    {user.Otp}
+                                    This code will expire in 10 minutes.
+                                    If you did not sign up, please ignore this email.
+                                    Thanks,<br/>Enjaz MultiVendor Team "
+            );
+            
             return new UserDto
             {
                 Id = user.Id,
@@ -69,24 +86,37 @@ namespace E_Commerce.App.Application.Service.Auth
         }
 
 
-        public async Task ForgotPasswordAsync(ForgatPasswordDto dto ,string url)
+        public async Task ForgotPasswordAsync(ForgatPasswordDto dto /*,string url*/)
         {
             var user = await userManager.FindByEmailAsync(dto.Email);
             if (user is null) throw new NotFoundException("user not found",dto.Email);
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var otp = new Random().Next(100000, 999999).ToString();
+            var expierd =  DateTime.UtcNow.AddMinutes(5);
 
+            user.Otp = otp;
+            user.OtpExpire = expierd;
+
+            await userManager.UpdateAsync(user);
             var email = new 
             {
                 To = user.Email!,
                 Subject = "Reset Password",
-                Body = $"Please reset your password by clicking <a href='{url}?email={user.Email}&token={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token))}'>here</a>"
+                Body = 
+                $@"
+                Hello {user.UserName}
+                We received a request to reset your password. Use the OTP code below to reset it:
+                {user.Otp}
+                This code will expire in 5 minutes.
+                If you did not request a password reset, please ignore this email.
+                Thanks,Enjaz Application Team"
             };
-            
-             _emailService.SendEmail(email.To, email.Subject, email.Body);
+
+
+            _emailService.SendEmail(email.To, email.Subject, email.Body);
 
         }
-        public async Task ResetPasswordAsync(ResetPasswordDto dto,string token)
+        public async Task ResetPasswordAsync(ResetPasswordDto dto ,string otp)
         {
             if(dto.NewPassword != dto.ConfirmPassword)
                 throw new ValidationExeption() { Errors = new List<string> { "New password and confirm password do not match." } };
@@ -94,9 +124,19 @@ namespace E_Commerce.App.Application.Service.Auth
             var user =await userManager.FindByEmailAsync(dto.Email);
             
             if (user is null) throw new NotFoundException("user not found", dto.Email);
-            
 
-            var result = await userManager.ResetPasswordAsync(user, token, dto.NewPassword);
+            //var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            //Console.WriteLine(decodedToken);
+            if (user.Otp != otp || user.OtpExpire < DateTime.UtcNow)
+                throw new UnAuthorizedExeption("Invalid or expired OTP");
+
+            await userManager.RemovePasswordAsync(user);
+
+            var result = await userManager.AddPasswordAsync(user, dto.NewPassword);
+
+            user.Otp = null;
+            user.OtpExpire = null;
+            await userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
             
@@ -171,6 +211,40 @@ namespace E_Commerce.App.Application.Service.Auth
                 Email = user.Email!,
                 Token = token
             };
+        }
+
+        public async Task VerifyEmail(VerifyOtpDto dto)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            if (user is null) throw new NotFoundException("user not found", dto.Email);
+
+            if (user.Otp != dto.OTP || user.OtpExpire < DateTime.UtcNow)
+                throw new UnAuthorizedExeption("Invalid or expired OTP");
+
+            user.EmailConfirmed = true;
+            user.Otp = null;
+            user.OtpExpire = null;
+            await userManager.UpdateAsync(user);
+
+        }
+
+        public async Task ResendOTP(ForgatPasswordDto dto)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            if (user is null) throw new NotFoundException("user not found", dto.Email);
+
+            user.Otp = new Random().Next(100000, 999999).ToString();
+            user.OtpExpire = DateTime.UtcNow.AddMinutes(5);
+            await userManager.UpdateAsync(user);
+
+             _emailService.SendEmail(user.Email,"Resend otp",
+                $@"
+                Hello {user.UserName}
+                We received a request to resend Otp. Use the OTP code below to reset it:
+                {user.Otp}
+                This code will expire in 5 minutes.
+                If you did not request , please ignore this email.
+                Thanks,Enjaz Application Team");
         }
     }
 }

@@ -62,6 +62,7 @@ namespace E_Commerce.APIs
 
             WebApplicationbuilder.Services.AddIdentity<ApplicationsUser, IdentityRole>(Identityoptions => {
 
+                
                 //Identityoptions.SignIn.RequireConfirmedEmail = true;
                 //Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
                 //Identityoptions.SignIn.RequireConfirmedPhoneNumber = true;
@@ -76,6 +77,7 @@ namespace E_Commerce.APIs
                 Identityoptions.Lockout.AllowedForNewUsers = true;
                 Identityoptions.Lockout.MaxFailedAccessAttempts = 5;
                 Identityoptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                Identityoptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
 
             }
             )
