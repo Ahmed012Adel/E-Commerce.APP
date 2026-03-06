@@ -25,8 +25,21 @@ namespace E_Commerce_Api.Controller.Controllers.Order
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
             var result = await serviceManager.OrderService.GetOrdersForUserAsync(buyerEmail!);
             return Ok(result);
-            
+        }
 
+        [HttpGet("id")]
+        public async Task<ActionResult<OrderToReturneDto>> GetOrderId (int id)
+        {
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
+            var result = await serviceManager.OrderService.GetOrderByIdAsync(id, buyerEmail!);
+            return Ok(result);
+        }
+
+        [HttpGet("DeliveryMethods")]
+        public async Task<ActionResult<IEnumerable<OrderToReturneDto>>> GetDeliveryMethods()
+        {
+            var result = await serviceManager.OrderService.GetDeliveryMethodsAsync();
+            return Ok(result);
         }
     }
 }

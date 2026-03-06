@@ -28,6 +28,7 @@ namespace E_Commerce.App.Application.Mapping
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Product.ProductId))
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.VendorName, opt => opt.MapFrom(src => src.Product.Vendor.Name))
                 .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<OrderItemPictureUrlResolver>());
             CreateMap<Address, AddressDto>().ReverseMap();
             CreateMap<DeliveryMethod, DeliveryMethodDto>();
